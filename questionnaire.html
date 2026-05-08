@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pharmaceutical Inventory Questionnaire</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0d2137;
+    --teal: #0a7c6e;
+    --teal-light: #0fa08e;
+    --cream: #f7f4ef;
+    --gold: #c9a84c;
+    --text: #1a2e3b;
+    --muted: #6b7e8a;
+    --border: #d4dde3;
+    --white: #ffffff;
+    --section-bg: #eef3f6;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  .hero {
+    background: var(--navy);
+    padding: 48px 24px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(10,124,110,0.18);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: -40px;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.10);
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--teal);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 16px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    color: #fff;
+    font-size: clamp(20px, 4vw, 30px);
+    line-height: 1.3;
+    max-width: 700px;
+    margin: 0 auto 14px;
+    position: relative; z-index: 1;
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero-sub {
+    font-size: 13px;
+    color: #9ab3c2;
+    max-width: 580px;
+    margin: 0 auto;
+    line-height: 1.7;
+    position: relative; z-index: 1;
+  }
+
+  .form-wrap {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 32px 16px 60px;
+  }
+
+  .intro-card {
+    background: var(--white);
+    border-left: 4px solid var(--teal);
+    border-radius: 10px;
+    padding: 22px 24px;
+    margin-bottom: 30px;
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--muted);
+    box-shadow: 0 2px 12px rgba(13,33,55,0.06);
+  }
+  .intro-card strong { color: var(--text); }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 36px 0 18px;
+  }
+  .section-label .dot {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--teal);
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-label h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    color: var(--navy);
+  }
+  .section-divider {
+    height: 2px;
+    background: linear-gradient(to right, var(--teal), transparent);
+    margin-bottom: 22px;
+    border-radius: 2px;
+  }
+
+  .q-card {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 22px 24px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 10px rgba(13,33,55,0.05);
+    border: 1px solid var(--border);
+    transition: box-shadow 0.2s;
+  }
+  .q-card:focus-within {
+    box-shadow: 0 4px 20px rgba(10,124,110,0.13);
+    border-color: var(--teal-light);
+  }
+
+  .q-num {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--teal);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .q-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+  .q-hint {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: -10px;
+    margin-bottom: 14px;
+    font-style: italic;
+  }
+
+  .options-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .option-item label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text);
+    padding: 9px 14px;
+    border-radius: 7px;
+    border: 1.5px solid var(--border);
+    transition: all 0.15s;
+    background: var(--white);
+  }
+  .option-item label:hover {
+    border-color: var(--teal-light);
+    background: #f0faf8;
+  }
+  .option-item input[type="radio"],
+  .option-item input[type="checkbox"] {
+    accent-color: var(--teal);
+    width: 16px; height: 16px;
+    flex-shrink: 0;
+  }
+  .option-item input:checked + span { color: var(--teal); font-weight: 600; }
+
+  .other-input {
+    width: 100%;
+    border: 1.5px solid var(--border);
+    border-radius: 7px;
+    padding: 9px 13px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--text);
+    margin-top: 8px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .other-input:focus { border-color: var(--teal); }
+
+  .submit-area {
+    text-align: center;
+    margin-top: 40px;
+  }
+  .submit-btn {
+    background: var(--teal);
+    color: #fff;
+    border: none;
+    padding: 15px 52px;
+    border-radius: 50px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: background 0.2s, transform 0.1s;
+    box-shadow: 0 4px 18px rgba(10,124,110,0.25);
+  }
+  .submit-btn:hover { background: var(--teal-light); transform: translateY(-1px); }
+  .submit-btn:active { transform: translateY(0); }
+
+  .thank-you {
+    display: none;
+    background: var(--navy);
+    color: #fff;
+    border-radius: 14px;
+    padding: 40px 32px;
+    text-align: center;
+    margin-top: 40px;
+  }
+  .thank-you .icon { font-size: 40px; margin-bottom: 14px; }
+  .thank-you h3 { font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 10px; }
+  .thank-you p { color: #9ab3c2; font-size: 14px; }
+
+  .required-note {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 24px;
+    text-align: right;
+  }
+  .req { color: #e05c5c; }
+
+  @media (max-width: 500px) {
+    .q-card { padding: 16px; }
+    .hero { padding: 36px 16px 30px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">Academic Research · Kwara State</div>
+  <h1>Assessment of <span>Inventory Management</span> and Supply Chain Challenges</h1>
+  <p class="hero-sub">Pharmaceutical Outlets in Offa Local Government Area, Kwara State</p>
+</div>
+
+<div class="form-wrap">
+  <div class="intro-card">
+    <strong>Dear Respondent,</strong><br>
+    This questionnaire is designed to gather information on inventory management practices and supply chain challenges in pharmaceutical outlets in Offa Local Government Area, Kwara State. Your participation is <strong>voluntary</strong> and all information provided will be treated with <strong>strict confidentiality</strong>. Findings will be used solely for academic research purposes. Please answer all questions honestly and to the best of your knowledge.<br><br>
+    <strong>Instruction:</strong> Please tick (✓) or fill in the appropriate option(s) as applicable.
+  </div>
+
+  <p class="required-note">Questions marked <span class="req">*</span> are required</p>
+
+  <form id="mainForm" onsubmit="handleSubmit(event)" novalidate>
+
+    <!-- SECTION A -->
+    <div class="section-label">
+      <div class="dot">A</div>
+      <h2>Respondent and Outlet Characteristics</h2>
+    </div>
+    <div class="section-divider"></div>
+
+    <!-- Q1 -->
+    <div class="q-card">
+      <div class="q-num">Question 1</div>
+      <div class="q-text">Type of pharmaceutical outlet <span class="req">*</span></div>
+      <ul class="options-list">
+        <li class="option-item"><label><input type="radio" name="q1" value="Community Pharmacy" required><span>Community Pharmacy</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q1" value="PPMV"><span>Patent and Proprietary Medicine Vendor (PPMV)</span></label></li>
+      </ul>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card">
+      <div class="q-num">Question 2</div>
+      <div class="q-text">Position / Designation in the outlet <span class="req">*</span></div>
+      <ul class="options-list">
+        <li class="option-item"><label><input type="radio" name="q2" value="Pharmacist (Owner)" required><span>Pharmacist (Owner)</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q2" value="Pharmacist (Superintendent)"><span>Pharmacist (Superintendent)</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q2" value="PPMV Owner/Operator"><span>PPMV Owner/Operator</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q2" value="Other"><span>Other (Please specify)</span></label></li>
+      </ul>
+      <input type="text" class="other-input" name="q2_other" placeholder="Please specify...">
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card">
+      <div class="q-num">Question 3</div>
+      <div class="q-text">Highest educational qualification <span class="req">*</span></div>
+      <ul class="options-list">
+        <li class="option-item"><label><input type="radio" name="q3" value="B.Pharm" required><span>Bachelor of Pharmacy (B.Pharm)</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q3" value="Pharm.D"><span>Doctor of Pharmacy (Pharm.D)</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q3" value="Postgraduate degree in Pharmacy"><span>Postgraduate degree in Pharmacy</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q3" value="PPMV Certificate/Training"><span>PPMV Certificate/Training</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q3" value="Secondary School Certificate"><span>Secondary School Certificate</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q3" value="Other"><span>Other (Please specify)</span></label></li>
+      </ul>
+      <input type="text" class="other-input" name="q3_other" placeholder="Please specify...">
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-card">
+      <div class="q-num">Question 4</div>
+      <div class="q-text">Years of experience operating/managing pharmaceutical outlet <span class="req">*</span></div>
+      <ul class="options-list">
+        <li class="option-item"><label><input type="radio" name="q4" value="Less than 1 year" required><span>Less than 1 year</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q4" value="1-3 years"><span>1–3 years</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q4" value="4-6 years"><span>4–6 years</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q4" value="7-10 years"><span>7–10 years</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q4" value="More than 10 years"><span>More than 10 years</span></label></li>
+      </ul>
+    </div>
+
+    <!-- SECTION B -->
+    <div class="section-label">
+      <div class="dot">B</div>
+      <h2>Inventory Management Practices and Supply Chain Challenges</h2>
+    </div>
+    <div class="section-divider"></div>
+
+    <!-- Q5 -->
+    <div class="q-card">
+      <div class="q-num">Question 5</div>
+      <div class="q-text">What stock control method(s) do you use in your outlet? <span class="req">*</span></div>
+      <p class="q-hint">You may select more than one</p>
+      <ul class="options-list">
+        <li class="option-item"><label><input type="checkbox" name="q5" value="Manual stock cards/registers"><span>Manual stock cards/registers</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q5" value="Computerized inventory software"><span>Computerized inventory software</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q5" value="Stock book/ledger"><span>Stock book/ledger</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q5" value="Minimum-Maximum stock levels"><span>Minimum-Maximum stock levels</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q5" value="Periodic stock review"><span>Periodic stock review</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q5" value="No formal stock control system"><span>No formal stock control system</span></label></li>
+      </ul>
+    </div>
+
+    <!-- Q6 -->
+    <div class="q-card">
+      <div class="q-num">Question 6</div>
+      <div class="q-text">How often do you conduct physical stock-taking (inventory count)? <span class="req">*</span></div>
+      <ul class="options-list">
+        <li class="option-item"><label><input type="radio" name="q6" value="Daily" required><span>Daily</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q6" value="Weekly"><span>Weekly</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q6" value="Monthly"><span>Monthly</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q6" value="Quarterly"><span>Quarterly</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q6" value="Annually"><span>Annually</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q6" value="Irregularly/As needed"><span>Irregularly / As needed</span></label></li>
+      </ul>
+    </div>
+
+    <!-- Q7 -->
+    <div class="q-card">
+      <div class="q-num">Question 7</div>
+      <div class="q-text">Do you maintain minimum and maximum stock levels for medicines? <span class="req">*</span></div>
+      <ul class="options-list">
+        <li class="option-item"><label><input type="radio" name="q7" value="Yes, for all medicines" required><span>Yes, for all medicines</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q7" value="Yes, for fast-moving medicines only"><span>Yes, for fast-moving medicines only</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q7" value="Yes, for expensive medicines only"><span>Yes, for expensive medicines only</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q7" value="No"><span>No</span></label></li>
+      </ul>
+    </div>
+
+    <!-- Q8 -->
+    <div class="q-card">
+      <div class="q-num">Question 8</div>
+      <div class="q-text">What method do you use to determine the quantity of medicines to order? <span class="req">*</span></div>
+      <ul class="options-list">
+        <li class="option-item"><label><input type="radio" name="q8" value="Based on past sales/consumption patterns" required><span>Based on past sales/consumption patterns</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q8" value="Based on available capital"><span>Based on available capital</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q8" value="Based on minimum/maximum stock levels"><span>Based on minimum/maximum stock levels</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q8" value="Based on supplier promotions/discounts"><span>Based on supplier promotions/discounts</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q8" value="Based on intuition/experience"><span>Based on intuition/experience</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q8" value="No specific method"><span>No specific method</span></label></li>
+      </ul>
+    </div>
+
+    <!-- Q9 -->
+    <div class="q-card">
+      <div class="q-num">Question 9</div>
+      <div class="q-text">Do you practice First-Expired-First-Out (FEFO) stock rotation? <span class="req">*</span></div>
+      <ul class="options-list">
+        <li class="option-item"><label><input type="radio" name="q9" value="Yes, always" required><span>Yes, always</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q9" value="Yes, sometimes"><span>Yes, sometimes</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q9" value="Rarely"><span>Rarely</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q9" value="No"><span>No</span></label></li>
+      </ul>
+    </div>
+
+    <!-- Q10 -->
+    <div class="q-card">
+      <div class="q-num">Question 10</div>
+      <div class="q-text">How frequently do you experience stock-outs (running out of essential medicines)? <span class="req">*</span></div>
+      <ul class="options-list">
+        <li class="option-item"><label><input type="radio" name="q10" value="Never" required><span>Never</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q10" value="Rarely (Once or twice a year)"><span>Rarely (Once or twice a year)</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q10" value="Occasionally (3-6 times a year)"><span>Occasionally (3–6 times a year)</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q10" value="Frequently (Monthly)"><span>Frequently (Monthly)</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q10" value="Very frequently (Weekly or more)"><span>Very frequently (Weekly or more)</span></label></li>
+      </ul>
+    </div>
+
+    <!-- Q11 -->
+    <div class="q-card">
+      <div class="q-num">Question 11</div>
+      <div class="q-text">What are the main causes of stock-outs in your outlet? <span class="req">*</span></div>
+      <p class="q-hint">You may select more than one</p>
+      <ul class="options-list">
+        <li class="option-item"><label><input type="checkbox" name="q11" value="Inadequate capital for procurement"><span>Inadequate capital for procurement</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q11" value="Supplier delays/unreliability"><span>Supplier delays/unreliability</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q11" value="Poor demand forecasting"><span>Poor demand forecasting</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q11" value="Unexpected increase in demand"><span>Unexpected increase in demand</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q11" value="Poor inventory record-keeping"><span>Poor inventory record-keeping</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q11" value="Transportation challenges"><span>Transportation challenges</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q11" value="Product unavailability from suppliers"><span>Product unavailability from suppliers</span></label></li>
+      </ul>
+    </div>
+
+    <!-- Q12 -->
+    <div class="q-card">
+      <div class="q-num">Question 12</div>
+      <div class="q-text">How do you assess the performance of your suppliers? <span class="req">*</span></div>
+      <p class="q-hint">You may select more than one</p>
+      <ul class="options-list">
+        <li class="option-item"><label><input type="checkbox" name="q12" value="Delivery reliability (on-time delivery)"><span>Delivery reliability (on-time delivery)</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q12" value="Product quality"><span>Product quality</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q12" value="Pricing/Cost competitiveness"><span>Pricing/Cost competitiveness</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q12" value="Product availability"><span>Product availability</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q12" value="Credit facilities offered"><span>Credit facilities offered</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q12" value="I do not formally assess suppliers"><span>I do not formally assess suppliers</span></label></li>
+      </ul>
+    </div>
+
+    <!-- Q13 -->
+    <div class="q-card">
+      <div class="q-num">Question 13</div>
+      <div class="q-text">What is the average lead time from your main supplier? <span class="req">*</span></div>
+      <ul class="options-list">
+        <li class="option-item"><label><input type="radio" name="q13" value="Same day" required><span>Same day</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q13" value="1-3 days"><span>1–3 days</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q13" value="4-7 days"><span>4–7 days</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q13" value="1-2 weeks"><span>1–2 weeks</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q13" value="More than 2 weeks"><span>More than 2 weeks</span></label></li>
+      </ul>
+    </div>
+
+    <!-- Q14 -->
+    <div class="q-card">
+      <div class="q-num">Question 14</div>
+      <div class="q-text">Do you maintain a record of expired medicines in your outlet? <span class="req">*</span></div>
+      <ul class="options-list">
+        <li class="option-item"><label><input type="radio" name="q14" value="Yes, always" required><span>Yes, always</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q14" value="Yes, sometimes"><span>Yes, sometimes</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q14" value="No"><span>No</span></label></li>
+      </ul>
+    </div>
+
+    <!-- Q15 -->
+    <div class="q-card">
+      <div class="q-num">Question 15</div>
+      <div class="q-text">What percentage of your monthly stock expires before sale? <span class="req">*</span></div>
+      <ul class="options-list">
+        <li class="option-item"><label><input type="radio" name="q15" value="None (0%)" required><span>None (0%)</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q15" value="Less than 1%"><span>Less than 1%</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q15" value="1-3%"><span>1–3%</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q15" value="4-5%"><span>4–5%</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q15" value="More than 5%"><span>More than 5%</span></label></li>
+      </ul>
+    </div>
+
+    <!-- Q16 -->
+    <div class="q-card">
+      <div class="q-num">Question 16</div>
+      <div class="q-text">What storage challenges do you face in your outlet? <span class="req">*</span></div>
+      <p class="q-hint">You may select more than one</p>
+      <ul class="options-list">
+        <li class="option-item"><label><input type="checkbox" name="q16" value="Inadequate storage space"><span>Inadequate storage space</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q16" value="Lack of refrigeration for thermolabile medicines"><span>Lack of refrigeration for thermolabile medicines</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q16" value="Poor temperature/humidity control"><span>Poor temperature/humidity control</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q16" value="Inadequate shelving/fixtures"><span>Inadequate shelving/fixtures</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q16" value="Pest infestation"><span>Pest infestation</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q16" value="No storage challenges"><span>No storage challenges</span></label></li>
+      </ul>
+    </div>
+
+    <!-- Q17 -->
+    <div class="q-card">
+      <div class="q-num">Question 17</div>
+      <div class="q-text">What financial challenges affect your inventory management? <span class="req">*</span></div>
+      <p class="q-hint">You may select more than one</p>
+      <ul class="options-list">
+        <li class="option-item"><label><input type="checkbox" name="q17" value="Limited capital for stock procurement"><span>Limited capital for stock procurement</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q17" value="Lack of access to credit facilities"><span>Lack of access to credit facilities</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q17" value="High interest rates on loans"><span>High interest rates on loans</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q17" value="Delayed payment from credit customers"><span>Delayed payment from credit customers</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q17" value="High holding costs"><span>High holding costs</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q17" value="No financial challenges"><span>No financial challenges</span></label></li>
+      </ul>
+    </div>
+
+    <!-- Q18 -->
+    <div class="q-card">
+      <div class="q-num">Question 18</div>
+      <div class="q-text">Have you received any training in inventory management or business management? <span class="req">*</span></div>
+      <ul class="options-list">
+        <li class="option-item"><label><input type="radio" name="q18" value="Yes, formal training (workshop/seminar)" required><span>Yes, formal training (workshop/seminar)</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q18" value="Yes, informal training (on-the-job)"><span>Yes, informal training (on-the-job)</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q18" value="Yes, both formal and informal"><span>Yes, both formal and informal</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q18" value="No training received"><span>No training received</span></label></li>
+      </ul>
+    </div>
+
+    <!-- Q19 -->
+    <div class="q-card">
+      <div class="q-num">Question 19</div>
+      <div class="q-text">What quality assurance challenges do you face? <span class="req">*</span></div>
+      <p class="q-hint">You may select more than one</p>
+      <ul class="options-list">
+        <li class="option-item"><label><input type="checkbox" name="q19" value="Difficulty identifying counterfeit medicines"><span>Difficulty identifying counterfeit medicines</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q19" value="Receiving substandard medicines from suppliers"><span>Receiving substandard medicines from suppliers</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q19" value="Lack of quality assurance equipment/tools"><span>Lack of quality assurance equipment/tools</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q19" value="Inadequate knowledge on quality verification"><span>Inadequate knowledge on quality verification</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q19" value="Pressure to buy cheaper (potentially fake) medicines"><span>Pressure to buy cheaper (potentially fake) medicines</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q19" value="No quality assurance challenges"><span>No quality assurance challenges</span></label></li>
+      </ul>
+    </div>
+
+    <!-- Q20 -->
+    <div class="q-card">
+      <div class="q-num">Question 20</div>
+      <div class="q-text">How do you rate the adequacy of regulatory support and supervision from the Pharmacists Council of Nigeria (PCN)? <span class="req">*</span></div>
+      <ul class="options-list">
+        <li class="option-item"><label><input type="radio" name="q20" value="Excellent" required><span>Excellent</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q20" value="Good"><span>Good</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q20" value="Fair"><span>Fair</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q20" value="Poor"><span>Poor</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q20" value="Very poor"><span>Very poor</span></label></li>
+      </ul>
+    </div>
+
+    <!-- Q21 -->
+    <div class="q-card">
+      <div class="q-num">Question 21</div>
+      <div class="q-text">What additional support would improve your inventory management and supply chain operations? <span class="req">*</span></div>
+      <p class="q-hint">You may select more than one</p>
+      <ul class="options-list">
+        <li class="option-item"><label><input type="checkbox" name="q21" value="Training in inventory management"><span>Training in inventory management</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q21" value="Access to affordable credit/loans"><span>Access to affordable credit/loans</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q21" value="Computerized inventory management software"><span>Computerized inventory management software</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q21" value="Improved supplier reliability"><span>Improved supplier reliability</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q21" value="Better storage infrastructure"><span>Better storage infrastructure</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q21" value="Strengthened regulatory enforcement"><span>Strengthened regulatory enforcement</span></label></li>
+        <li class="option-item"><label><input type="checkbox" name="q21" value="Professional association support"><span>Professional association support</span></label></li>
+      </ul>
+    </div>
+
+    <!-- Q22 -->
+    <div class="q-card">
+      <div class="q-num">Question 22</div>
+      <div class="q-text">On average, how many times per month do you order medicines from your suppliers? <span class="req">*</span></div>
+      <ul class="options-list">
+        <li class="option-item"><label><input type="radio" name="q22" value="Daily" required><span>Daily</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q22" value="2-3 times per week"><span>2–3 times per week</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q22" value="Once per week"><span>Once per week</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q22" value="2-3 times per month"><span>2–3 times per month</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q22" value="Once per month"><span>Once per month</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q22" value="Less than once per month"><span>Less than once per month</span></label></li>
+      </ul>
+    </div>
+
+    <!-- Q23 -->
+    <div class="q-card">
+      <div class="q-num">Question 23</div>
+      <div class="q-text">Do you have a written inventory management policy or procedure in your outlet? <span class="req">*</span></div>
+      <ul class="options-list">
+        <li class="option-item"><label><input type="radio" name="q23" value="Yes, comprehensive written policy" required><span>Yes, comprehensive written policy</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q23" value="Yes, basic written guidelines"><span>Yes, basic written guidelines</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q23" value="No written policy, but follow informal procedures"><span>No written policy, but follow informal procedures</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q23" value="No policy or procedures"><span>No policy or procedures</span></label></li>
+      </ul>
+    </div>
+
+    <!-- Q24 -->
+    <div class="q-card">
+      <div class="q-num">Question 24</div>
+      <div class="q-text">How would you rate your overall inventory management performance? <span class="req">*</span></div>
+      <ul class="options-list">
+        <li class="option-item"><label><input type="radio" name="q24" value="Excellent" required><span>Excellent</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q24" value="Good"><span>Good</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q24" value="Fair"><span>Fair</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q24" value="Poor"><span>Poor</span></label></li>
+        <li class="option-item"><label><input type="radio" name="q24" value="Very poor"><span>Very poor</span></label></li>
+      </ul>
+    </div>
+
+    <div class="submit-area">
+      <button type="submit" class="submit-btn">Submit Questionnaire</button>
+    </div>
+
+  </form>
+
+  <div class="thank-you" id="thankYou">
+    <div class="icon">✅</div>
+    <h3>Thank You for Your Participation!</h3>
+    <p>Your responses have been recorded. The information provided will be used solely for academic research purposes and treated with strict confidentiality.</p>
+  </div>
+
+</div>
+
+<script>
+  function handleSubmit(e) {
+    e.preventDefault();
+    // Basic validation for required radio groups
+    const radioGroups = ['q1','q2','q3','q4','q6','q7','q8','q9','q10','q13','q14','q15','q18','q20','q22','q23','q24'];
+    let missing = [];
+    radioGroups.forEach(name => {
+      const checked = document.querySelector(`input[name="${name}"]:checked`);
+      if (!checked) missing.push(name);
+    });
+    if (missing.length > 0) {
+      alert(`Please answer all required questions before submitting.\n\nMissing: Question(s) ${missing.map(n => n.replace('q','')).join(', ')}`);
+      const firstMissing = document.querySelector(`input[name="${missing[0]}"]`);
+      if (firstMissing) firstMissing.closest('.q-card').scrollIntoView({behavior:'smooth', block:'center'});
+      return;
+    }
+    document.getElementById('mainForm').style.display = 'none';
+    document.getElementById('thankYou').style.display = 'block';
+    document.getElementById('thankYou').scrollIntoView({behavior:'smooth'});
+  }
+</script>
+</body>
+</html>
